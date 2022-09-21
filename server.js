@@ -22,10 +22,25 @@ var server = http.createServer(function (request, response) {
     console.log('有个傻子发请求过来啦！路径（带查询参数）为：' + pathWithQuery)
 
     response.statusCode = 200
-    response.setHeader('Content-Type', 'text/html;charset=utf-8')
     // 如果path是/则换为/index.html。不是则是path
     // 默认首页
     const filePath = path === '/' ? '/index.html' : path
+    // 获得路径文件后缀.的位置
+    const index = filePath.lastIndexOf('.')
+    // 将.的位置传给suffix（后缀）
+    const suffix = filePath.substring(index)
+    console.log(suffix)
+    // 利用哈希表存储所有的后缀格式
+    const fileTypes = {
+        '.html': 'text/html',
+        '.css': 'text/css',
+        '.js': 'text/javascript',
+        '.png': 'image/png',
+        '.jpg': 'image/jpeg'
+    }
+    // 利用哈希表
+    // 当路径名you.html 则setHeader更改为text/html
+    response.setHeader('Content-Type', `${fileTypes[suffix]};charset=utf-8`)
     let content
     // try catch捕捉错误
     // 如果content存在则继续执行，如果不存在则是错误，返回文件不存在
